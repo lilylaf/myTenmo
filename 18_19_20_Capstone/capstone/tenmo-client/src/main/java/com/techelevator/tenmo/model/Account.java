@@ -1,18 +1,20 @@
 package com.techelevator.tenmo.model;
 
+import javax.validation.constraints.NotBlank;
+
 import java.math.BigDecimal;
 
 public class Account {
 
+    @NotBlank(message = "The field `title` should not be blank.")
     private int accountId;
-  //  @Min(value = 1, message = "The field 'accountId' is required.")
     public int getAccountId() { return accountId; }
     public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
 
+    @NotBlank(message = "The field `title` should not be blank.")
     private int userId;
-    //  @Min(value = 1, message = "The field 'userId' is required.")
     public int getUserId() { return userId; }
     public void setUserId(int userId) {
         this.userId = userId;

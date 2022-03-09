@@ -1,12 +1,15 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
-
+@Component
 public class JdbcAccountDao implements AccountDao{
 
     private JdbcTemplate jdbcTemplate;
@@ -15,22 +18,24 @@ public class JdbcAccountDao implements AccountDao{
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //override method for Account getUserBalance()
     @Override
-    public Account getUserBalance(int userId){
-        Account a = null;
-
-        String sql = "SELECT balance " +
+    public BigDecimal getUserBalance(int userId){
+        String sql = "SELECT user_id, account_id, balance " +
                      "FROM account " +
                      "WHERE user_id = ?;";
+        SqlRowSet results = null;
+        BigDecimal balance = null;
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        if (results.next()){
-            a = mapRowToAccount(results);
+        try{
+            results = jdbcTemplate.queryForRowSet(sql, userId);
+            if(results.next()) {
+                balance = results.getBigDecimal("balance");
+            }
+        } catch (DataAccessException e) {
+            System.out.println("error accessing data" + e.getMessage());
         }
-        return a;
+        return balance;
     }
-
 
     //create a mapRowToAccount
     private Account mapRowToAccount(SqlRowSet results){
