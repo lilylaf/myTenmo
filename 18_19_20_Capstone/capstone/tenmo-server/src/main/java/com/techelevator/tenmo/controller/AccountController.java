@@ -14,23 +14,22 @@ import java.security.Principal;
 public class AccountController {
 
     private AccountDao accountDao;
-    private UserDao userDao;
+
 
     public AccountController(AccountDao dao){
         this.accountDao = dao;
-        this.userDao = userDao;
     }
 
     @PreAuthorize("permitAll")
-    @RequestMapping(path = "balance/{userId}", method = RequestMethod.GET)
-    public BigDecimal getBalance(@PathVariable int userId) throws AccountNotFoundException {
-        BigDecimal balance = accountDao.getUserBalance(userId);
-        return balance;
+    @RequestMapping(path = "balance/{userId}", method = RequestMethod.GET) //creating our endpoint for client-facing access
+    public BigDecimal getBalance(@PathVariable int userId) {
+        return accountDao.getUserBalance(userId); //calling method to get balance, and returning that balance
     }
 
+    //From Read Me:
 
 
-
+    //I should be able to choose from a list of users to send TE Bucks to.
 
 
 }

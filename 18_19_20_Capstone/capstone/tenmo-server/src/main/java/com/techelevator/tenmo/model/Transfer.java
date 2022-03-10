@@ -5,7 +5,17 @@ import java.math.BigDecimal;
 public class Transfer {
 
     //variables
+
     private int transferId;
+    private int transferTypeId;
+    private int transferStatusId;
+    private int accountFrom;
+    private int accountTo;
+    private BigDecimal amount;
+
+
+    //getters & setters
+
     public int getTransferId(){
         return transferId;
     }
@@ -13,34 +23,59 @@ public class Transfer {
         this.transferId = transferId;
     }
 
-    private int transferType;
-    public int getTransferType(){
-        return transferType;
+    public int getTransferTypeId(){
+        return transferTypeId;
+    }
+    public void setTransferTypeId(int transferTypeId) {
+        this.transferTypeId = transferTypeId;
     }
 
+    public int getTransferStatusId() {
+        return transferStatusId;
+    }
+    public void setTransferStatusId(int transferStatusId) {
+        this.transferStatusId = transferStatusId;
+    }
 
-    private int transferStatusId;
-    //get
+    public int getAccountFrom() {
+        return accountFrom;
+    }
+    public void setAccountFrom(int accountFrom) {
+        this.accountFrom = accountFrom;
+    }
 
-    //set
+    public int getAccountTo() {
+        return accountTo;
+    }
+    public void setAccountTo(int accountTo) {
+        this.accountTo = accountTo;
+    }
 
-    private int accountFrom;
-    //get
-    //set
-
-    private int accountTo;
-    //get
-    //set
-
-    private BigDecimal amount;
-    //get
-    //set
+    public BigDecimal getAmount() {
+        return amount;
+    }
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
 
     //constructor
 
-
+    public Transfer(){
+        //I don't think we need anything in here
+    }
 
     //methods
+
+    @Override
+    public String toString(){
+        String s = "Transfer ID: " + transferId +
+                   "Transfer Type ID: " + transferTypeId +
+                   "Transfer Status ID: " + transferStatusId +
+                   "Account From: " + accountFrom +
+                   "Account To: " + accountTo +
+                   "Amount: " + amount;
+        return s;
+    }
 
 }
