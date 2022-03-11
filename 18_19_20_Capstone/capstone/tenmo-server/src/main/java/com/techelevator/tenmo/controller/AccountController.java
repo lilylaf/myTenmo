@@ -11,18 +11,21 @@ import java.math.BigDecimal;
 import java.security.Principal;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class AccountController {
 
     private AccountDao accountDao;
+    private UserDao userDao;
 
 
-    public AccountController(AccountDao dao){
-        this.accountDao = dao;
+    public AccountController(AccountDao accountDao, UserDao userDao){
+        this.accountDao = accountDao;
+        this.userDao = userDao;
     }
 
-    @PreAuthorize("permitAll")
-    @RequestMapping(path = "balance/{userId}", method = RequestMethod.GET) //creating our endpoint for client-facing access
-    public BigDecimal getBalance(@PathVariable int userId) {
+    @RequestMapping(path = "/account/balance", method = RequestMethod.GET) //creating our endpoint for client-facing access
+    public @ResponseBody BigDecimal getUserBalance(Principal principal) {
+        int userId = userDao.findIdByUsername(principal.getName());
         return accountDao.getUserBalance(userId); //calling method to get balance, and returning that balance
     }
 

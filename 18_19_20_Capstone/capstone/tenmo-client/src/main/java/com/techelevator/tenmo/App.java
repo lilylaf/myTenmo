@@ -6,6 +6,7 @@ import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransferService;
 
 import java.math.BigDecimal;
 
@@ -13,10 +14,14 @@ public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
 
+    private AuthenticatedUser currentUser;
+
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
+    private AccountService accountService = new AccountService(API_BASE_URL);
+    private TransferService transferService = new TransferService(API_BASE_URL);
 
-    private AuthenticatedUser currentUser;
+
 
     public static void main(String[] args) {
         App app = new App();
@@ -89,15 +94,11 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-       AccountService as = new AccountService(API_BASE_URL, currentUser);
-        //now we need to write code to get our balance
-        //I think we should do this in a try catch, in case our balance is 0
+        System.out.println("Your balance is: " + accountService.getUserBalance(currentUser.getToken()));
 	}
 
-	private void viewTransferHistory() { //create instance of TransferService, not Transfer
-		// TODO Auto-generated method stub
-		
+	private void viewTransferHistory() {
+        System.out.printf("The following is your transfer History: %.2f", transferService.getListOfTransfers());
 	}
 
 	private void viewPendingRequests() { //create instance of TransferService, not Transfer

@@ -1,7 +1,14 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
+
 
 public class TransferService {
 
@@ -10,15 +17,28 @@ public class TransferService {
     private AuthenticatedUser currentUser;
 
 
-    //we are setting our current user and base url for this AccountService
-    public TransferService (String url, AuthenticatedUser currentUser){
-        this.currentUser = currentUser;
+    public TransferService (String url){
         BASE_URL = url;
     }
 
-    //code for our methods will probably go here
+    public Transfer[] getListOfTransfers(){
+        Transfer[] t = null;
+
+        try {
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(BASE_URL + "account/transfer" + currentUser.getUser().getId(), HttpMethod.GET, authEntity(), Transfer[].class);
+            t = response.getBody();
+        } catch (Exception e) {
+            System.out.println("There was an error: " + e.getMessage());
+        }
+        return t;
+    }
 
 
-    //I think we might need an HttpEntity here? let's look at our security and/or client facing notes for how to do this
 
+
+    private HttpEntity authEntity(){
+        HttpHeaders headers = new HttpHeaders(); //make sure to import the correct package! only one of the auto-fill options works.
+        headers.setBearerAuth(currentUser.getToken()); //getting our token from user login
+        return new HttpEntity<>(headers); //returning our authenticated object
+    }
 }

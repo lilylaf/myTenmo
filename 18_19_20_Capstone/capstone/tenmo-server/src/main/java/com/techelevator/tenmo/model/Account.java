@@ -8,7 +8,10 @@ public class Account {
     //variables
 
     private int accountId;
+
     private int userId;
+
+    //add @Positive
     private BigDecimal balance;
 
 
@@ -30,12 +33,16 @@ public class Account {
     }
 
 
-    //constructor
+    //constructors
 
-    public Account(){
+    public Account(int accountId, int userId, BigDecimal balance){
         this.accountId = accountId;
         this.userId = userId;
         this.balance = balance;
+    }
+
+    public Account(){
+
     }
 
 

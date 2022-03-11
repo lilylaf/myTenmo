@@ -31,11 +31,4 @@ public class Account {
     }
 
 
-    //methods
-
-    @Override
-    public String toString(){
-        return String.valueOf(balance);
-    }
-
 }

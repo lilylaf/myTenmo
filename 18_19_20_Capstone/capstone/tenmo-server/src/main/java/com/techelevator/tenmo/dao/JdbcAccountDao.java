@@ -20,21 +20,18 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public BigDecimal getUserBalance(int userId){
-        String sql = "SELECT user_id, account_id, balance " +
-                     "FROM account " +
-                     "WHERE user_id = ?;";
-        SqlRowSet results = null;
-        BigDecimal balance = null;
+       // BigDecimal balance = new BigDecimal("0.0");
 
-        try{
-            results = jdbcTemplate.queryForRowSet(sql, userId);
-            if(results.next()) {
-                balance = results.getBigDecimal("balance");
-            }
-        } catch (DataAccessException e) {
-            System.out.println("error accessing data" + e.getMessage());
-        }
-        return balance;
+        String sql = "SELECT balance\n" +
+                     "FROM account\n" +
+                     "WHERE user_id = ?;";
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class, userId);
+//
+//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+//        if(results.next()) {
+//            balance = results.getBigDecimal("balance");
+//        }
+//        return balance;
     }
 
     //create a mapRowToAccount
