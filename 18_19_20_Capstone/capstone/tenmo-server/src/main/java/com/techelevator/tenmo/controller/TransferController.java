@@ -38,13 +38,13 @@ public class TransferController {
 
     //As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
     @RequestMapping(path = "account/transfer/send", method = RequestMethod.POST)
-    public Transfer sendBucks(Principal principal, @PathVariable int accountTo, @PathVariable int accountFrom, @PathVariable BigDecimal amount){
+    public String sendBucks(Principal principal, @PathVariable int accountTo, @PathVariable int accountFrom, @PathVariable BigDecimal amount){
         //todo --> do I need a new @PathVariable for each item, or do I only need to write it once.
         Transfer t = new Transfer();
             t.setAccountTo(accountTo);
             t.setAccountFrom(accountFrom);
             t.setAmount(amount);
-            
+
         int userId = userDao.findIdByUsername(principal.getName()); //getting our userId in a secure way
         return transferDao.sendTransfer(userId, t.getAccountTo(),t.getAccountFrom(), t.getAmount());
     }

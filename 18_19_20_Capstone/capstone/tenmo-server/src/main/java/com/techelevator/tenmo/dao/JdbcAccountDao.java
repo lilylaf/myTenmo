@@ -26,13 +26,44 @@ public class JdbcAccountDao implements AccountDao{
                      "FROM account\n" +
                      "WHERE user_id = ?;";
         return jdbcTemplate.queryForObject(sql, BigDecimal.class, userId);
-//
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-//        if(results.next()) {
-//            balance = results.getBigDecimal("balance");
-//        }
-//        return balance;
     }
+
+    @Override
+    public BigDecimal addBalance(BigDecimal amount, int userId) {
+        Account a = findAccountById(userId);
+        a.addToBalance(amount);
+
+        String sql = "UPDATE account\n" +
+                     "SET balance = balance + ?\n" +
+                     "WHERE account_id = ?;";
+        return a.getBalance();
+    }
+
+    @Override
+    public BigDecimal subtractBalance(BigDecimal amount, int userId) {
+        Account a = findAccountById(userId);
+        a.subtractFromBalance(amount);
+
+        String sql = "UPDATE account\n" +
+                     "SET balance = balance - ?\n" +
+                     "WHERE account_id = ?;";
+        return a.getBalance();
+    }
+
+    @Override
+    public Account findAccountById(int userId) {
+        Account a = null;
+
+        String sql = "SELECT *\n" +
+                     "FROM account\n" +
+                     "WHERE user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        a = mapRowToAccount(results);
+
+        return a;
+    }
+
+
 
     //create a mapRowToAccount
     private Account mapRowToAccount(SqlRowSet results){

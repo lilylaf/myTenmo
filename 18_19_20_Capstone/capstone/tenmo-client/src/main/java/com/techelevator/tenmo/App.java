@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -9,6 +10,7 @@ import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TransferService;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class App {
 
@@ -98,7 +100,7 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-        System.out.printf("The following is your transfer History: %.2f", transferService.getListOfTransfers());
+        System.out.println("The following is your transfer History: " + Arrays.toString(transferService.getListOfTransfers(currentUser.getToken())));
 	}
 
 	private void viewPendingRequests() { //create instance of TransferService, not Transfer
@@ -108,7 +110,16 @@ public class App {
 
 	private void sendBucks() { //create instance of TransferService, not Transfer
 		// TODO Auto-generated method stub
-		
+        //TODO --> generate a list of all users
+
+        try{
+            int userSendingBucksTo = consoleService.promptForInt("Enter the account ID of the user you would like to send bucks to: ");
+            BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you would like to transfer: ");
+            transferService.sendTransfer(currentUser.getToken(), userSendingBucksTo, amount);
+            System.out.println("Your transaction has been sent: " );
+        } catch (Exception e){
+            System.out.println("error was in the app: " + e.getMessage());
+        }
 	}
 
 	private void requestBucks() { //create instance of TransferService, not Transfer

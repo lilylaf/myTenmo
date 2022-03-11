@@ -45,11 +45,17 @@ public class Account {
 
     }
 
-
     //methods
     @Override
     public String toString(){
         return String.valueOf(balance);
     }
 
+    public void addToBalance(BigDecimal a){
+       balance = this.balance.add(a);
+    }
+
+    public void subtractFromBalance(BigDecimal s){
+       balance = this.balance.subtract(s);
+    }
 }

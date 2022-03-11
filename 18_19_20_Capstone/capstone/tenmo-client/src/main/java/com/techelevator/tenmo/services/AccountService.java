@@ -12,21 +12,26 @@ import java.math.BigDecimal;
 
 public class AccountService {
 
+    //variables
+
     private String BASE_URL;
     private RestTemplate restTemplate = new RestTemplate();
-    //private AuthenticatedUser currentUser;
 
+    //constructor
 
     public AccountService(String url) {
         BASE_URL = url;
     }
 
-    public BigDecimal getUserBalance(String token){
-        BigDecimal balance = new BigDecimal(0);
+
+    //methods
+
+    public BigDecimal getUserBalance(String token){ //we need to get the token to validate the user
+        BigDecimal balance = new BigDecimal(0); //creating a BigDecimal value to return
 
         try{
-            ResponseEntity<BigDecimal> response = restTemplate.exchange(BASE_URL + "account/balance", HttpMethod.GET, makeAuthEntity(token), BigDecimal.class);
-            balance = response.getBody();
+            ResponseEntity<BigDecimal> response = restTemplate.exchange(BASE_URL + "account/balance", HttpMethod.GET, makeAuthEntity(token), BigDecimal.class); //idk how to explain this in english
+            balance = response.getBody(); //setting the body of response equal to our return object
         } catch (Exception e){
             System.out.println("Error in getUserBalance: " + e.getMessage());
             BasicLogger.log("Error getting balance: " + e.getMessage());
@@ -34,7 +39,7 @@ public class AccountService {
         return balance;
     }
 
-    private HttpEntity makeAuthEntity(String token){
+    private HttpEntity makeAuthEntity(String token){ //authenticating our entity
         HttpHeaders headers = new HttpHeaders(); //make sure to import the correct package! only one of the auto-fill options works.
         headers.setBearerAuth(token); //getting our token from user login
         return new HttpEntity<>(headers); //returning our authenticated object
