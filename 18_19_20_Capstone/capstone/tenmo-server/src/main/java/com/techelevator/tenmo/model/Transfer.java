@@ -66,8 +66,12 @@ public class Transfer {
 
     //constructor
 
-    public Transfer(){
-        //I don't think we need anything in here
+    public Transfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount){
+        this.transferTypeId = transferTypeId;
+        this.transferStatusId = transferStatusId;
+        this.accountFrom = accountFrom;
+        this.accountTo = accountTo;
+        this.amount = amount;
     }
 
     //methods

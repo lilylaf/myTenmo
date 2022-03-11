@@ -5,10 +5,7 @@ import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -38,15 +35,14 @@ public class TransferController {
 
     //As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
     @RequestMapping(path = "account/transfer/send", method = RequestMethod.POST)
-    public String sendBucks(Principal principal, @PathVariable int accountTo, @PathVariable int accountFrom, @PathVariable BigDecimal amount){
-        //todo --> do I need a new @PathVariable for each item, or do I only need to write it once.
-        Transfer t = new Transfer();
-            t.setAccountTo(accountTo);
-            t.setAccountFrom(accountFrom);
-            t.setAmount(amount);
+    public String sendBucks(Principal principal, @RequestBody Transfer transfer){
 
+        //Transfer t = new Transfer();
         int userId = userDao.findIdByUsername(principal.getName()); //getting our userId in a secure way
-        return transferDao.sendTransfer(userId, t.getAccountTo(),t.getAccountFrom(), t.getAmount());
+        return transferDao.sendTransfer(userId, transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+
+        // 415 : [{"timestamp":"2022-03-11T21:19:41.453+00:00","status":415,"error":"Unsupported Media Type",
+        // "message":"Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported","path":"/account/transfer/send"}]
     }
 
 
