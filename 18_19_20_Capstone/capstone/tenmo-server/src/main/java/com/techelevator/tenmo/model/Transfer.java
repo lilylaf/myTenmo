@@ -74,6 +74,10 @@ public class Transfer {
         this.amount = amount;
     }
 
+    public Transfer(){
+
+    }
+
     //methods
 
     @Override

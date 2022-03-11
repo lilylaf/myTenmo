@@ -68,7 +68,7 @@ public class JdbcTransferDao implements TransferDao{
         }
 
         if(amount.compareTo(accountDao.getUserBalance(userId)) == -1){ //if (amount < userBalance)
-            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount)\n" +
+            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                          "Values (2, 2, ?, ?, ?);"; //the first value "2" =transfer type "send". the second value "2" = transfer status "approved".
             jdbcTemplate.update(sql, accountFrom, accountTo, amount);
             accountDao.addBalance(amount, accountTo); //calling method in accountDao
@@ -125,5 +125,6 @@ public class JdbcTransferDao implements TransferDao{
 
     }
     //current error message
-    //2022-03-11T13:02:55.96331 Error sending transfer: 500 : [{"timestamp":"2022-03-11T18:02:55.962+00:00","status":500,"error":"Internal Server Error","message":"Missing URI template variable 'accountTo' for method parameter of type int","path":"/account/transfer/send"}]
+    //2022-03-11T13:02:55.96331 Error sending transfer: 500 : [{"timestamp":"2022-03-11T18:02:55.962+00:00","status":500,"error":"Internal Server Error",
+    // "message":"Missing URI template variable 'accountTo' for method parameter of type int","path":"/account/transfer/send"}]
 }

@@ -1,9 +1,6 @@
 package com.techelevator.tenmo;
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
@@ -115,7 +112,10 @@ public class App {
         try{
             int userSendingBucksTo = consoleService.promptForInt("Enter the account ID of the user you would like to send bucks to: ");
             BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you would like to transfer: ");
-            transferService.sendTransfer(currentUser.getToken(), userSendingBucksTo, amount);
+            Transfer transfer = new Transfer(); //create transfer object here.  transfer.setUserSeindBucksTo & amount.  then replace line 116 wi
+            transfer.setAccountTo(userSendingBucksTo);
+            transfer.setAmount(amount);
+            transferService.sendTransfer(currentUser.getToken(), transfer);
             System.out.println("Your transaction has been sent: " );
         } catch (Exception e){
             System.out.println("error was in the app: " + e.getMessage());

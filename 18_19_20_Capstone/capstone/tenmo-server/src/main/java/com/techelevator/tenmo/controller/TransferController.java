@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 
+import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Transfer;
@@ -17,6 +18,13 @@ public class TransferController {
 
     private TransferDao transferDao;
     private UserDao userDao;
+    private AccountDao accountDao;
+
+    public TransferController(TransferDao transferDao, UserDao userDao, AccountDao accountDao){
+        this.transferDao = transferDao;
+        this.userDao = userDao;
+        this.accountDao = accountDao;
+    }
 
 
     //As an authenticated user of the system, I need to be able to see transfers I have sent or received.
@@ -39,10 +47,15 @@ public class TransferController {
 
         //Transfer t = new Transfer();
         int userId = userDao.findIdByUsername(principal.getName()); //getting our userId in a secure way
-        return transferDao.sendTransfer(userId, transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+        return transferDao.sendTransfer(userId, accountDao.findAccountById(userDao.findIdByUsername(principal.getName())).getAccountId(), transfer.getAccountTo(), transfer.getAmount());
 
         // 415 : [{"timestamp":"2022-03-11T21:19:41.453+00:00","status":415,"error":"Unsupported Media Type",
-        // "message":"Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported","path":"/account/transfer/send"}]
+        // "message":"Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported"
+        // ,"path":"/account/transfer/send"}]
+
+//         415 : [{"timestamp":"2022-03-11T22:51:55.894+00:00","status":415,"error":"Unsupported Media Type",
+//                "message":"Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported"
+//                ,"path":"/account/transfer/send"}]
     }
 
 
