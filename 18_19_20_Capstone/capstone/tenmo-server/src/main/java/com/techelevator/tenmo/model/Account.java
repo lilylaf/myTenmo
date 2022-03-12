@@ -49,7 +49,9 @@ public class Account {
     //methods
     @Override
     public String toString(){
-        return String.valueOf(balance);
+        return "Account ID: " + accountId +
+                " User ID: " + userId +
+                " Balance: " + String.valueOf(balance);
     }
 
     public void addToBalance(BigDecimal a){

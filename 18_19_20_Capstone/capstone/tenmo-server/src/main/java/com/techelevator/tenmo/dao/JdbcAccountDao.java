@@ -1,7 +1,6 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,6 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public BigDecimal getUserBalance(int userId){
-       // BigDecimal balance = new BigDecimal("0.0");
 
         String sql = "SELECT balance\n" +
                      "FROM account\n" +
@@ -31,11 +29,15 @@ public class JdbcAccountDao implements AccountDao{
     @Override
     public BigDecimal addBalance(BigDecimal amount, int userId) {
         Account a = findAccountById(userId);
-        a.addToBalance(amount);
+        BigDecimal newBalance = a.getBalance().add(amount);
+        //a.addToBalance(amount);
+        //BigDecimal newBalance = a.getBalance();
 
         String sql = "UPDATE account\n" +
-                     "SET balance = balance + ?\n" +
+                     "SET balance = ?\n" +
                      "WHERE account_id = ?;";
+
+        jdbcTemplate.update(sql, newBalance, userId);
         return a.getBalance();
     }
 
@@ -43,24 +45,28 @@ public class JdbcAccountDao implements AccountDao{
     public BigDecimal subtractBalance(BigDecimal amount, int userId) {
         Account a = findAccountById(userId);
         a.subtractFromBalance(amount);
+        BigDecimal newBalance = a.getBalance();
 
         String sql = "UPDATE account\n" +
-                     "SET balance = balance - ?\n" +
+                     "SET balance = ?\n" +
                      "WHERE account_id = ?;";
+
+        jdbcTemplate.update(sql, newBalance, userId);
         return a.getBalance();
     }
 
     @Override
     public Account findAccountById(int userId) {
-        Account a = null;
-
-        String sql = "SELECT *\n" +
-                     "FROM account\n" +
+        String sql = "SELECT * " +
+                     "FROM account " +
                      "WHERE user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        a = mapRowToAccount(results);
-
-        return a;
+        if(results.next()) {
+           return mapRowToAccount(results);
+        } else {
+            System.out.println("error, userID not found");
+            return null;
+        }
     }
 
     //getListOfUsers

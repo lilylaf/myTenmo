@@ -13,12 +13,13 @@ import java.util.List;
 public class JdbcTransferDao implements TransferDao{
 
     private JdbcTemplate jdbcTemplate;
-    private TransferDao transferDao;
     private AccountDao accountDao;
 
-    public JdbcTransferDao(JdbcTemplate jdbcTemplate){
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate, AccountDao accountDao){
         this.jdbcTemplate = jdbcTemplate;
+        this.accountDao = accountDao;
     }
+
 
     //method to get all transfers(list) --> probably taking in userId
     @Override
@@ -67,10 +68,10 @@ public class JdbcTransferDao implements TransferDao{
             r = "You cannot send money to yourself";
         }
 
-        if(amount.compareTo(accountDao.getUserBalance(userId)) == -1){ //if (amount < userBalance)
-            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+        if(amount.compareTo(accountDao.findAccountById(userId).getBalance()) == -1){ //if (amount < userBalance)
+            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_to, account_from, amount) " +
                          "Values (2, 2, ?, ?, ?);"; //the first value "2" =transfer type "send". the second value "2" = transfer status "approved".
-            jdbcTemplate.update(sql, accountFrom, accountTo, amount);
+            jdbcTemplate.update(sql, accountTo, accountFrom, amount);
             accountDao.addBalance(amount, accountTo); //calling method in accountDao
             accountDao.subtractBalance(amount, accountFrom); //calling method in accountDao
             r = "Your transfer was completed.";
@@ -114,17 +115,20 @@ public class JdbcTransferDao implements TransferDao{
     private Transfer mapRowToTransfer(SqlRowSet results){ //most likely will have SqlRowSet results in the parameter
         Transfer t = new Transfer();
 
-        t.setAccountFrom(results.getInt("account_from"));
         t.setTransferId(results.getInt("transfer_id"));
         t.setTransferTypeId(results.getInt("transfer_type_id"));
         t.setTransferStatusId(results.getInt("transfer_status_id"));
-        t.setAccountTo(results.getInt("account_to"));
         t.setAmount(results.getBigDecimal("amount"));
+        t.setAccountFrom(results.getInt("account_from"));
+        t.setAccountTo(results.getInt("account_to"));
+
 
         return t;
-
     }
-    //current error message
-    //2022-03-11T13:02:55.96331 Error sending transfer: 500 : [{"timestamp":"2022-03-11T18:02:55.962+00:00","status":500,"error":"Internal Server Error",
-    // "message":"Missing URI template variable 'accountTo' for method parameter of type int","path":"/account/transfer/send"}]
+
+
+//    at com.techelevator.tenmo.dao.JdbcAccountDao.mapRowToAccount(JdbcAccountDao.java:78) ~[classes/:na]
+//    at com.techelevator.tenmo.dao.JdbcAccountDao.findAccountById(JdbcAccountDao.java:65) ~[classes/:na]
+//    at com.techelevator.tenmo.controller.TransferController.sendBucks(TransferController.java:48) ~[classes/:na]
+
 }

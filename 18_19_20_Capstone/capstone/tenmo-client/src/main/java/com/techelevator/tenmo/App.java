@@ -112,11 +112,10 @@ public class App {
         try{
             int userSendingBucksTo = consoleService.promptForInt("Enter the account ID of the user you would like to send bucks to: ");
             BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you would like to transfer: ");
-            Transfer transfer = new Transfer(); //create transfer object here.  transfer.setUserSeindBucksTo & amount.  then replace line 116 wi
+            Transfer transfer = new Transfer(); //create transfer object here.  transfer.setUserSendBucksTo & amount.  then replace line 116 wi
             transfer.setAccountTo(userSendingBucksTo);
             transfer.setAmount(amount);
             transferService.sendTransfer(currentUser.getToken(), transfer);
-            System.out.println("Your transaction has been sent: " );
         } catch (Exception e){
             System.out.println("error was in the app: " + e.getMessage());
         }

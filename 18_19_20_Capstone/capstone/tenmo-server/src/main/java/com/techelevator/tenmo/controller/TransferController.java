@@ -44,18 +44,9 @@ public class TransferController {
     //As an authenticated user of the system, I need to be able to *send* a transfer of a specific amount of TE Bucks to a registered user.
     @RequestMapping(path = "account/transfer/send", method = RequestMethod.POST)
     public String sendBucks(Principal principal, @RequestBody Transfer transfer){
-
-        //Transfer t = new Transfer();
         int userId = userDao.findIdByUsername(principal.getName()); //getting our userId in a secure way
-        return transferDao.sendTransfer(userId, accountDao.findAccountById(userDao.findIdByUsername(principal.getName())).getAccountId(), transfer.getAccountTo(), transfer.getAmount());
-
-        // 415 : [{"timestamp":"2022-03-11T21:19:41.453+00:00","status":415,"error":"Unsupported Media Type",
-        // "message":"Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported"
-        // ,"path":"/account/transfer/send"}]
-
-//         415 : [{"timestamp":"2022-03-11T22:51:55.894+00:00","status":415,"error":"Unsupported Media Type",
-//                "message":"Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported"
-//                ,"path":"/account/transfer/send"}]
+        return transferDao.sendTransfer(userId, accountDao.findAccountById(userDao.findIdByUsername(principal.getName())).getAccountId(),
+                transfer.getAccountTo(), transfer.getAmount());
     }
 
 
