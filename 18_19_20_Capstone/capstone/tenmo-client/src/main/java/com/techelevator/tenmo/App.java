@@ -110,7 +110,7 @@ public class App {
         //TODO --> generate a list of all users
 
         try{
-            int userSendingBucksTo = consoleService.promptForInt("Enter the account ID of the user you would like to send bucks to: ");
+            int userSendingBucksTo = consoleService.promptForInt("Enter the Account ID of the user you would like to send bucks to: ");
             BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you would like to transfer: ");
             Transfer transfer = new Transfer(); //create transfer object here.  transfer.setUserSendBucksTo & amount.  then replace line 116 wi
             transfer.setAccountTo(userSendingBucksTo);

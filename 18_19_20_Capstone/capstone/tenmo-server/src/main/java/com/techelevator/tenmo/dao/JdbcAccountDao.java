@@ -27,8 +27,8 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public BigDecimal addBalance(BigDecimal amount, int userId) {
-        Account a = findAccountById(userId);
+    public BigDecimal addBalance(BigDecimal amount, int accountId) { // userId is being sent in as AccountId
+        Account a = findAccountByAccountId(accountId);
         BigDecimal newBalance = a.getBalance().add(amount);
         //a.addToBalance(amount);
         //BigDecimal newBalance = a.getBalance();
@@ -37,13 +37,13 @@ public class JdbcAccountDao implements AccountDao{
                      "SET balance = ?\n" +
                      "WHERE account_id = ?;";
 
-        jdbcTemplate.update(sql, newBalance, userId);
+        jdbcTemplate.update(sql, newBalance, accountId);
         return a.getBalance();
     }
 
     @Override
-    public BigDecimal subtractBalance(BigDecimal amount, int userId) {
-        Account a = findAccountById(userId);
+    public BigDecimal subtractBalance(BigDecimal amount, int accountId) {
+        Account a = findAccountByAccountId(accountId);
         a.subtractFromBalance(amount);
         BigDecimal newBalance = a.getBalance();
 
@@ -51,20 +51,34 @@ public class JdbcAccountDao implements AccountDao{
                      "SET balance = ?\n" +
                      "WHERE account_id = ?;";
 
-        jdbcTemplate.update(sql, newBalance, userId);
+        jdbcTemplate.update(sql, newBalance, accountId);
         return a.getBalance();
     }
 
     @Override
-    public Account findAccountById(int userId) {
+    public Account findAccountById(int userId) { //is being sent accountID from add/subtract methods
         String sql = "SELECT * " +
-                     "FROM account " +
-                     "WHERE user_id = ?;";
+                "FROM account " +
+                "WHERE user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        if(results.next()) {
-           return mapRowToAccount(results);
+        if (results.next()) {
+            return mapRowToAccount(results);
         } else {
             System.out.println("error, userID not found");
+            return null;
+        }
+    }
+
+    @Override
+    public Account findAccountByAccountId(int accountId) { //is being sent accountID from add/subtract methods
+        String sql = "SELECT * " +
+                "FROM account " +
+                "WHERE account_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
+        if(results.next()) {
+            return mapRowToAccount(results);
+        } else {
+            System.out.println("error, accountID not found");
             return null;
         }
     }

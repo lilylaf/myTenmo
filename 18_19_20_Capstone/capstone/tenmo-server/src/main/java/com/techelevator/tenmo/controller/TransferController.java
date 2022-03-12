@@ -51,7 +51,9 @@ public class TransferController {
 
 
 
-
+// 2022-03-12 13:15:29.779 ERROR 14588 --- [nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]
+// : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException:
+// Cannot invoke "com.techelevator.tenmo.model.Account.getBalance()" because "a" is null] with root cause
 
 
 

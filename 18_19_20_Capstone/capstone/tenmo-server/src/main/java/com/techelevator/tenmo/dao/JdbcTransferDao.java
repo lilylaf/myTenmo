@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,9 @@ import java.util.List;
 
 @Component
 public class JdbcTransferDao implements TransferDao{
-
+    @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
     private AccountDao accountDao;
 
     public JdbcTransferDao(JdbcTemplate jdbcTemplate, AccountDao accountDao){
@@ -58,28 +60,57 @@ public class JdbcTransferDao implements TransferDao{
         return null;
     }
 
-
+//todo commented out this & copied it down below
     //method to send a transfer --> probably taking in amount, account from, and account to
+//    @Override
+//    public String sendTransfer(int userId, int accountFrom, int accountTo, BigDecimal amount){
+//        String r = "";
+//
+//        if(accountFrom == accountTo){
+//            r = "You cannot send money to yourself";
+//        }
+//
+//        if(amount.compareTo(accountDao.findAccountById(userId).getBalance()) == -1){ //if (amount < userBalance)
+//            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+//                         "Values (2, 2, ?, ?, ?);"; //the first value "2" =transfer type "send". the second value "2" = transfer status "approved".
+//            jdbcTemplate.update(sql, accountFrom, accountTo, amount);
+//            accountDao.addBalance(amount, accountTo); //calling method in accountDao
+//            accountDao.subtractBalance(amount, accountFrom); //calling method in accountDao
+//            r = "Your transfer was completed."; // todo Current Error is here
+//        } else {
+//           r = "Your transfer was not completed.";
+//        }
+//        return r;
+//    }
+// todo CURRENT ERROR
+    //    There was an error in sending your transfer: Error while extracting response for type [class com.techelevator.tenmo.model.Transfer] and content type [application/json];
+//    nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unrecognized token 'Your': was expecting (JSON String,
+//    Number, Array, Object or token 'null', 'true' or 'false'); nested exception is com.fasterxml.jackson.core.JsonParseException:
+//    Unrecognized token 'Your': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+//        at [Source: (PushbackInputStream); line: 1, column: 6]
+
+
     @Override
-    public String sendTransfer(int userId, int accountTo, int accountFrom, BigDecimal amount){
-        String r = "";
+    public String sendTransfer(int userId, int accountFrom, int accountTo, BigDecimal amount){
 
         if(accountFrom == accountTo){
-            r = "You cannot send money to yourself";
+            System.out.println("You cannot send money to yourself");
         }
 
         if(amount.compareTo(accountDao.findAccountById(userId).getBalance()) == -1){ //if (amount < userBalance)
-            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_to, account_from, amount) " +
-                         "Values (2, 2, ?, ?, ?);"; //the first value "2" =transfer type "send". the second value "2" = transfer status "approved".
-            jdbcTemplate.update(sql, accountTo, accountFrom, amount);
+            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+                    "Values (2, 2, ?, ?, ?);"; //the first value "2" =transfer type "send". the second value "2" = transfer status "approved".
+            jdbcTemplate.update(sql, accountFrom, accountTo, amount);
             accountDao.addBalance(amount, accountTo); //calling method in accountDao
             accountDao.subtractBalance(amount, accountFrom); //calling method in accountDao
-            r = "Your transfer was completed.";
+            System.out.println("Your transfer was completed.");
         } else {
-            r = "Your transfer was not completed";
+            System.out.println("Your transfer was not completed.");
         }
-        return r;
+        return null;
     }
+
+
 //*** prevent user from sending money to themselves ***
     // should be able to select a user from a list of users
     // the receiver(account to) needs to have their account balance increase by amount of transfer
@@ -126,9 +157,5 @@ public class JdbcTransferDao implements TransferDao{
         return t;
     }
 
-
-//    at com.techelevator.tenmo.dao.JdbcAccountDao.mapRowToAccount(JdbcAccountDao.java:78) ~[classes/:na]
-//    at com.techelevator.tenmo.dao.JdbcAccountDao.findAccountById(JdbcAccountDao.java:65) ~[classes/:na]
-//    at com.techelevator.tenmo.controller.TransferController.sendBucks(TransferController.java:48) ~[classes/:na]
 
 }
