@@ -12,14 +12,18 @@ import java.util.List;
 
 @Component
 public class JdbcTransferDao implements TransferDao{
-    @Autowired
+    @Autowired  //googled this --said it provides "more fine grained control" code was not running, I tried adding this
+                // and we got it running--not sure it is doing anything!
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private AccountDao accountDao;
+    @Autowired
+    private UserDao userDao;
 
-    public JdbcTransferDao(JdbcTemplate jdbcTemplate, AccountDao accountDao){
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate, AccountDao accountDao, UserDao userDao){
         this.jdbcTemplate = jdbcTemplate;
         this.accountDao = accountDao;
+        this.userDao = userDao;
     }
 
 
@@ -60,39 +64,10 @@ public class JdbcTransferDao implements TransferDao{
         return null;
     }
 
-//todo commented out this & copied it down below
-    //method to send a transfer --> probably taking in amount, account from, and account to
-//    @Override
-//    public String sendTransfer(int userId, int accountFrom, int accountTo, BigDecimal amount){
-//        String r = "";
-//
-//        if(accountFrom == accountTo){
-//            r = "You cannot send money to yourself";
-//        }
-//
-//        if(amount.compareTo(accountDao.findAccountById(userId).getBalance()) == -1){ //if (amount < userBalance)
-//            String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-//                         "Values (2, 2, ?, ?, ?);"; //the first value "2" =transfer type "send". the second value "2" = transfer status "approved".
-//            jdbcTemplate.update(sql, accountFrom, accountTo, amount);
-//            accountDao.addBalance(amount, accountTo); //calling method in accountDao
-//            accountDao.subtractBalance(amount, accountFrom); //calling method in accountDao
-//            r = "Your transfer was completed."; // todo Current Error is here
-//        } else {
-//           r = "Your transfer was not completed.";
-//        }
-//        return r;
-//    }
-// todo CURRENT ERROR
-    //    There was an error in sending your transfer: Error while extracting response for type [class com.techelevator.tenmo.model.Transfer] and content type [application/json];
-//    nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unrecognized token 'Your': was expecting (JSON String,
-//    Number, Array, Object or token 'null', 'true' or 'false'); nested exception is com.fasterxml.jackson.core.JsonParseException:
-//    Unrecognized token 'Your': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
-//        at [Source: (PushbackInputStream); line: 1, column: 6]
-
 
     @Override
     public String sendTransfer(int userId, int accountFrom, int accountTo, BigDecimal amount){
-
+        userDao.findAll();
         if(accountFrom == accountTo){
             System.out.println("You cannot send money to yourself");
         }

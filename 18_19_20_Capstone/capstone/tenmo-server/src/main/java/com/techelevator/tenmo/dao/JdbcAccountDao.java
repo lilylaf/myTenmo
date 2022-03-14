@@ -83,7 +83,21 @@ public class JdbcAccountDao implements AccountDao{
         }
     }
 
-    //getListOfUsers
+    @Override
+    public Account findAccountByName(String name){
+        String sql = "SELECT * " +
+                "FROM account " +
+                "NATURAL JOIN tenmo_user " +
+                "WHERE username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, name);
+        if(results.next()) {
+            return mapRowToAccount(results);
+        } else {
+            System.out.println("error, username not found");
+            return null;
+        }
+    }
+
 
 
 

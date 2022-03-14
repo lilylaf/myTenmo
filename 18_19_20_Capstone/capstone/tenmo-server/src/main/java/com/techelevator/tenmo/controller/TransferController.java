@@ -5,6 +5,7 @@ import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,15 @@ public class TransferController {
         this.userDao = userDao;
         this.accountDao = accountDao;
     }
+
+    //As an authenticated user of the system, I need to be able to be able to transfer money to a list of users.
+    @RequestMapping(path = "", method = RequestMethod.GET)
+    public List<User> getListOfUsers(User user){
+
+        //todo FINISH
+
+    }
+
 
 
     //As an authenticated user of the system, I need to be able to see transfers I have sent or received.

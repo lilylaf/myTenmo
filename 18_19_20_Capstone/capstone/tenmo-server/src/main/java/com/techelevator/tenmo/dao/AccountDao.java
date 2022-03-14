@@ -9,6 +9,7 @@ public interface AccountDao {
     BigDecimal getUserBalance(int userId);
     BigDecimal addBalance(BigDecimal amount, int userId);
     BigDecimal subtractBalance(BigDecimal amount, int userId);
-    public Account findAccountById(int userId);
-    public Account findAccountByAccountId(int accountId);
+    Account findAccountById(int userId);
+    Account findAccountByAccountId(int accountId);
+    Account findAccountByName(String name);
 }

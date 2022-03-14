@@ -1,8 +1,6 @@
 package com.techelevator.tenmo.services;
 
-import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +22,7 @@ public class TransferService {
         Transfer[] t = null;
 
         try {
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(BASE_URL + "account/transfer" +  makeAuthEntity(token), HttpMethod.GET, makeAuthEntity(token), Transfer[].class);
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(BASE_URL + "account/transfer", HttpMethod.GET, makeAuthEntity(token), Transfer[].class);
             t = response.getBody();
         } catch (Exception e) {
             System.out.println("There was an error in getListOfTransfers: " + e.getMessage());
