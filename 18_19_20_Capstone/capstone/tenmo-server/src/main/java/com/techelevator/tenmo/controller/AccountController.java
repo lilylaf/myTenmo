@@ -3,12 +3,14 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
@@ -29,11 +31,17 @@ public class AccountController {
         return accountDao.getUserBalance(userId); //calling method to get balance, and returning that balance
     }
 
-    //From Read Me:
+    //As an authenticated user of the system, I need to be able to be able to transfer money to a list of users.
+    @RequestMapping(path = "/users", method = RequestMethod.GET)
+    public List<User> getListOfUsers(){
+        return userDao.findAll();
+    }
 
-
-    //I should be able to choose from a list of users to send TE Bucks to.
-
-
+    //we know this isn't as secure, but could not figure out how else to do it.
+    //As an authenticated user of the system, I need to be able to be able to transfer money to a list of users.
+   @RequestMapping(path = "/user/getAccount", method = RequestMethod.GET)
+    public Account getAccountByUsername(String username){
+        return accountDao.findAccountByName(username);
+   }
 }
 

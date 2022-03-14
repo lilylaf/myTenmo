@@ -67,7 +67,6 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public String sendTransfer(int userId, int accountFrom, int accountTo, BigDecimal amount){
-        userDao.findAll();
         if(accountFrom == accountTo){
             System.out.println("You cannot send money to yourself");
         }

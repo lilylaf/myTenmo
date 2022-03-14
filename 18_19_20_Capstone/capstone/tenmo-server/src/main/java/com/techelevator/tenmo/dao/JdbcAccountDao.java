@@ -85,9 +85,9 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account findAccountByName(String name){
-        String sql = "SELECT * " +
+        String sql = "SELECT account_id " +
                 "FROM account " +
-                "NATURAL JOIN tenmo_user " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
                 "WHERE username = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, name);
         if(results.next()) {

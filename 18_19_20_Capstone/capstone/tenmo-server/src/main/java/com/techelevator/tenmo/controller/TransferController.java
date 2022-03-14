@@ -27,15 +27,6 @@ public class TransferController {
         this.accountDao = accountDao;
     }
 
-    //As an authenticated user of the system, I need to be able to be able to transfer money to a list of users.
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<User> getListOfUsers(User user){
-
-        //todo FINISH
-
-    }
-
-
 
     //As an authenticated user of the system, I need to be able to see transfers I have sent or received.
     @RequestMapping(path = "account/transfer", method = RequestMethod.GET)
@@ -58,22 +49,5 @@ public class TransferController {
         return transferDao.sendTransfer(userId, accountDao.findAccountById(userDao.findIdByUsername(principal.getName())).getAccountId(),
                 transfer.getAccountTo(), transfer.getAmount());
     }
-
-
-
-// 2022-03-12 13:15:29.779 ERROR 14588 --- [nio-8080-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]
-// : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException:
-// Cannot invoke "com.techelevator.tenmo.model.Account.getBalance()" because "a" is null] with root cause
-
-
-
-
-
-
-
-
-
-
-
 
 }

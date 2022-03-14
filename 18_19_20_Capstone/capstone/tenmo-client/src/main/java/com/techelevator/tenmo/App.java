@@ -1,10 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.*;
-import com.techelevator.tenmo.services.AccountService;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
-import com.techelevator.tenmo.services.TransferService;
+import com.techelevator.tenmo.services.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -19,6 +16,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private AccountService accountService = new AccountService(API_BASE_URL);
     private TransferService transferService = new TransferService(API_BASE_URL);
+    private UserService userService = new UserService(API_BASE_URL);
 
 
 
@@ -106,17 +104,16 @@ public class App {
 	}
 
 	private void sendBucks() { //create instance of TransferService, not Transfer
-		// TODO Auto-generated method stub
-        //TODO --> generate a list of all users
-
 
         try{
-
-            String userSendingBucksTo = consoleService.promptForString("Enter the username you would like to send bucks to: ");
+            userService.getListOfUsers(currentUser.getToken()); //-->this does not work
+            //String userSendingBucksTo = consoleService.promptForString("Enter the username you would like to send bucks to: ");
+            //Account a = userService.getAccountByUsername(currentUser.getToken(),userSendingBucksTo);
+            //int accountTo = a.getAccountId();
+            int userSendingBucksTo = consoleService.promptForInt("Enter the account ID that you would like to send the bucks to: ");
             BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you would like to transfer: ");
             Transfer transfer = new Transfer(); //create transfer object here.  transfer.setUserSendBucksTo & amount.  then replace line 116 wi
-
-            //transfer.setAccountTo(userSendingBucksTo);
+            transfer.setAccountTo(userSendingBucksTo);
             transfer.setAmount(amount);
             transferService.sendTransfer(currentUser.getToken(), transfer);
         } catch (Exception e){
