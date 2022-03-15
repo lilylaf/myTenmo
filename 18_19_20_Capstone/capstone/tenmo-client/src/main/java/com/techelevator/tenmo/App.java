@@ -95,7 +95,7 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-        System.out.println("The following is your transfer History: " + Arrays.toString(transferService.getListOfTransfers(currentUser.getToken())));
+        transferService.getListOfTransfers(currentUser.getToken());
 	}
 
 	private void viewPendingRequests() { //create instance of TransferService, not Transfer
@@ -104,15 +104,11 @@ public class App {
 	}
 
 	private void sendBucks() { //create instance of TransferService, not Transfer
-
         try{
-            userService.getListOfUsers(currentUser.getToken()); //-->this does not work
-            //String userSendingBucksTo = consoleService.promptForString("Enter the username you would like to send bucks to: ");
-            //Account a = userService.getAccountByUsername(currentUser.getToken(),userSendingBucksTo);
-            //int accountTo = a.getAccountId();
+            userService.getListOfUsers(currentUser.getToken());
             int userSendingBucksTo = consoleService.promptForInt("Enter the account ID that you would like to send the bucks to: ");
             BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you would like to transfer: ");
-            Transfer transfer = new Transfer(); //create transfer object here.  transfer.setUserSendBucksTo & amount.  then replace line 116 wi
+            Transfer transfer = new Transfer();
             transfer.setAccountTo(userSendingBucksTo);
             transfer.setAmount(amount);
             transferService.sendTransfer(currentUser.getToken(), transfer);

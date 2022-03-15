@@ -8,12 +8,8 @@ public class Account {
     //variables
 
     private int accountId;
-
     private int userId;
-
-    //add @Positive
     private BigDecimal balance;
-
 
     //getters & setters
 
@@ -31,7 +27,6 @@ public class Account {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
-
 
     //constructors
 

@@ -90,5 +90,4 @@ public class Transfer {
                    "Amount: " + amount;
         return s;
     }
-
 }

@@ -7,17 +7,7 @@ import java.util.List;
 
 public interface TransferDao {
 
-
-    //Methods for our Transfer
-
-    //method to get all transfers(list)
     List<Transfer> getListOfTransfers(int userId);
-
-    //method to get specified transfer
     Transfer getTransferById(int userId, int transactionId);
-
-    //method to send a transfer
     String sendTransfer(int userId, int accountTo, int accountFrom, BigDecimal amount);
-
-
 }

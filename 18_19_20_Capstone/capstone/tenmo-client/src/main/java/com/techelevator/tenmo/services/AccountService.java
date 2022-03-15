@@ -23,7 +23,6 @@ public class AccountService {
         BASE_URL = url;
     }
 
-
     //methods
 
     public BigDecimal getUserBalance(String token){ //we need to get the token to validate the user

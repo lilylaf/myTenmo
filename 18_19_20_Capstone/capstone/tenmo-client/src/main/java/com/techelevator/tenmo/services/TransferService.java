@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +25,10 @@ public class TransferService {
         try {
             ResponseEntity<Transfer[]> response = restTemplate.exchange(BASE_URL + "account/transfer", HttpMethod.GET, makeAuthEntity(token), Transfer[].class);
             t = response.getBody();
+            for (Transfer s : t) {
+                System.out.println("Transfer ID: " + s.getTransferId() + " Account To: " + s.getAccountTo() + " Account From: " + s.getAccountFrom()
+                + " Amount: $" + s.getAmount() + " Transfer Type: " + s.getTransferTypeId() + " Transfer Status: " + s.getTransferStatusId());
+            }
         } catch (Exception e) {
             System.out.println("There was an error in getListOfTransfers: " + e.getMessage());
             BasicLogger.log("Error getting transfer history: " + e.getMessage());
@@ -35,7 +40,7 @@ public class TransferService {
 
     //send a transaction
     public void sendTransfer(String token, Transfer transfer){
-        try {
+        try { //needs its own http entity created
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setBearerAuth(token);

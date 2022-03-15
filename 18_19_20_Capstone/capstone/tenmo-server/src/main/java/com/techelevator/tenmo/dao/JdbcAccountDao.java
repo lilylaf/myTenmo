@@ -5,7 +5,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Component
@@ -27,11 +26,10 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public BigDecimal addBalance(BigDecimal amount, int accountId) { // userId is being sent in as AccountId
+    public BigDecimal addBalance(BigDecimal amount, int accountId) {
         Account a = findAccountByAccountId(accountId);
-        BigDecimal newBalance = a.getBalance().add(amount);
-        //a.addToBalance(amount);
-        //BigDecimal newBalance = a.getBalance();
+        a.addToBalance(amount);
+        BigDecimal newBalance = a.getBalance();
 
         String sql = "UPDATE account\n" +
                      "SET balance = ?\n" +
@@ -56,7 +54,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account findAccountById(int userId) { //is being sent accountID from add/subtract methods
+    public Account findAccountById(int userId) {
         String sql = "SELECT * " +
                 "FROM account " +
                 "WHERE user_id = ?;";
@@ -70,7 +68,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account findAccountByAccountId(int accountId) { //is being sent accountID from add/subtract methods
+    public Account findAccountByAccountId(int accountId) {
         String sql = "SELECT * " +
                 "FROM account " +
                 "WHERE account_id = ?;";
@@ -98,10 +96,6 @@ public class JdbcAccountDao implements AccountDao{
         }
     }
 
-
-
-
-    //create a mapRowToAccount
     private Account mapRowToAccount(SqlRowSet results){
         Account a = new Account();
 
