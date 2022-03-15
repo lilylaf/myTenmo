@@ -28,7 +28,6 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public List<Transfer> getListOfTransfers(int userId){
-        //todo --> cannot check this sql until send method is complete
         List<Transfer> list = new ArrayList<>();
         String sql = "SELECT t.*, c.username AS userFrom, d.username AS userTo\n" +
                      "FROM transfer t\n" +

@@ -91,7 +91,7 @@ public class App {
     }
 
 	private void viewCurrentBalance() {
-        System.out.println("Your balance is: " + accountService.getUserBalance(currentUser.getToken()));
+        System.out.println("Your current balance is: $" + accountService.getUserBalance(currentUser.getToken()));
 	}
 
 	private void viewTransferHistory() {
