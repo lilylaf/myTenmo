@@ -37,8 +37,8 @@ public class JdbcTransferDao implements TransferDao{
                      "JOIN account a ON t.account_from = a.account_id\n" +
                      "JOIN account b ON t.account_to = b.account_id\n" +
                      "JOIN tenmo_user c ON a.user_id = c.user_id\n" +
-                     "JOIN temno_user d ON b.user_id = d.user_id\n" +
-                     "WHERE a.user_id = ? \n"; //possibly need to add b.user_id = ?
+                     "JOIN tenmo_user d ON b.user_id = d.user_id\n" +
+                     "WHERE a.user_id = ? ;"; //possibly need to add b.user_id = ?
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
         while(results.next()){
