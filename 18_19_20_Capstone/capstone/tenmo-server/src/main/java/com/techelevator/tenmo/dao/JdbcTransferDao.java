@@ -63,7 +63,8 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public String sendTransfer(int userId, int accountFrom, int accountTo, BigDecimal amount){
         if(accountFrom == accountTo){
-            System.out.println("You cannot send money to yourself");
+            //System.out.println("You cannot send money to yourself");
+            return null;
         }
 
         if(amount.compareTo(accountDao.findAccountById(userId).getBalance()) == -1){ //if (amount < userBalance)
@@ -72,9 +73,9 @@ public class JdbcTransferDao implements TransferDao{
             jdbcTemplate.update(sql, accountFrom, accountTo, amount);
             accountDao.addBalance(amount, accountTo); //calling method in accountDao
             accountDao.subtractBalance(amount, accountFrom); //calling method in accountDao
-            System.out.println("Your transfer was completed.");
+           // System.out.println("Your transfer was completed.");
         } else {
-            System.out.println("Your transfer was not completed.");
+           // System.out.println("Your transfer was not completed.");
         }
         return null;
     }

@@ -35,6 +35,7 @@ public class JdbcAccountDao implements AccountDao{
                      "SET balance = ?\n" +
                      "WHERE account_id = ?;";
 
+        //set balance = balance + ?;
         jdbcTemplate.update(sql, newBalance, accountId);
         return a.getBalance();
     }

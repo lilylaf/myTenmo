@@ -48,5 +48,5 @@ public class TransferController {
         return transferDao.sendTransfer(userId, accountDao.findAccountById(userDao.findIdByUsername(principal.getName())).getAccountId(),
                 transfer.getAccountTo(), transfer.getAmount());
     }
-
+    //our sendBucks can be slow, minimize the number of times we are hitting our database.
 }
